@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PolyPlay Schmetterlinge</title>
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=VT323&display=swap");
+       body {
+        margin: 0;
+        padding: 0;
+        overflow-y: hidden;
+      }
+      .boxing {
+        border: 2px solid red;
+      }  
+        .game {
+        height: 100vh;
+        width: 100%;
+        background-color: rgb(24, 24, 24);
+      }
+      .data {
+        font-family: "VT323", monospace;
+        height: 5vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 30px;
+      }
+      .data p {
+        text-align: center;
+        flex-grow: 1;
+        color: white;
+      }
+
+      .playground {
+        background-image: url(img/StarSky.gif);
+        height: 92.5vh;
+        margin: 0 2.5vh;
+      }
+      .playgroundbeforestart{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+      .logo{
+        height: 300px;
+        width: 300px;
+        background-image: url(img/PolyPlayLogorework.png);
+        background-position: center;
+        background-size: contain;
+        background-repeat: no-repeat;
+      }
+
+      .startbtn{
+        margin-top: 20px;
+        font-family: "VT323", monospace;
+        font-size: 40px;
+        height: 70px;
+        width: 300px;
+        border: 4px solid black;
+        background-color: #0a17d1;
+      }
+      .startbtn a{
+        color: white;
+        text-decoration: none;
+      }
+      .startbtn:hover{
+        background-color: #2108ab;
+      }
+      .playground input{
+        font-family: "VT323", monospace;
+        font-size: 40px;
+        height: 50px;
+        width: 270px;
+        padding-left: 20px;
+        color: black;
+        border: 4px solid black;
+        background-color: #0a17d1;
+      }
+      .playground input:hover{
+        background-color: #2108ab;
+      }
+
+
+      .playground input::placeholder{
+        color: black;
+      }
+      .playground select{
+        font-family: "VT323", monospace;
+        font-size: 40px;
+        margin-top: 20px;
+        height: 60px;
+        width: 300px;
+        color: black;
+        border: 4px solid black;
+        background-color: #0a17d1;
+      }
+      .playground select:hover{
+        background-color: #2108ab;
+      }
+      
+      .player {
+        position: absolute;
+        top: 600px;
+        left: 780px;
+        height: 40px;
+        width: 40px;
+        background-image: url(img/hero-idle-side.png);
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: contain;
+      }
+
+      .blume {
+        position: absolute;
+        height: 40px;
+        width: 40px;
+        background-image: url(img/Busch.png);
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: contain;
+        top: 0px;
+        left: 0px;
+      }
+      .displayschmetterling{
+        height: 60px;
+        width: 60px;
+        background-image: url(img/Schmetterlingorange.png);
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: contain;
+      }
+      .displayschmetterlingblau{
+        height: 60px;
+        width: 60px;
+        background-image: url(img/Schmetterlingblau.png);
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: contain;
+      }
+      .displayschmetterlinglila{
+        height: 60px;
+        width: 60px;
+        background-image: url(img/Schmetterlinglila.png);
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: contain;
+      }
+      .schmetterling {
+        position: absolute;
+        height: 40px;
+        width: 40px;
+        background-image: url(img/Schmetterlingorange.png);
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: contain;
+        top: 0px;
+        left: 0px;
+      }
+      .schmetterlingblau {
+        position: absolute;
+        height: 40px;
+        width: 40px;
+        background-image: url(img/Schmetterlingblau.png);
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: contain;
+        top: 0px;
+        left: 0px;
+      }
+      .schmetterlinglila {
+        position: absolute;
+        height: 40px;
+        width: 40px;
+        background-image: url(img/Schmetterlinglila.png);
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: contain;
+        top: 0px;
+        left: 0px;
+      }
+      .legende{
+        font-family: "VT323", monospace;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 20px;
+        height: 70px;
+        width: 240px;
+        border: 5px solid black;
+        padding: 20px;
+        background-color: #0a17d1;
+      }
+      .schmetterlingcard p{
+        margin: 0;
+        font-size: 27px;
+        text-align: center;
+      }
+      .finalpunkte{
+        font-family: "VT323", monospace;
+        font-size: 40px;
+        color: white;
+        }
+      
+        .scoreborder{
+          padding: 20px;
+          background-color: black;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="game">
+        <div class="data">
+          <p>Name: <span id="name"></span></p>
+          <p>Timer: <span id="sec"></span></p>
+          <p>Score: <span id="scoreticker">0</span></p>
+        </div>
+        <div id="gameboard" class="playground playgroundbeforestart">
+            <div class="logo"></div>
+            <input id="nameinput" type="text" placeholder="NAME">
+            <select name="Bushes" id="bushselector">
+              <option value="10">10 Büsche</option>
+              <option value="20">20 Büsche</option>
+              <option value="30">30 Büsche</option>
+              <option value="40">40 Büsche</option>
+              <option value="50">50 Büsche</option>
+              <option value="60">60 Büsche</option>
+            </select>
+           
+            <select name="Bushes" id="timeselector">
+              <option value="10">10 Sek</option>
+              <option value="20">20 Sek</option>
+              <option value="30">30 Sek</option>
+              <option value="60">60 Sek</option>
+              <option value="120">120 Sek</option>
+              <option value="200">200 Sek</option>
+            </select>
+            <button onclick="startGame()" id="startbtn" class="startbtn">STARTEN</button>
+            <div class="legende">
+              <div class="schmetterlingcard">
+                <div class="displayschmetterling"></div>
+                <p>10PT</p>
+              </div>
+              <div class="schmetterlingcard">
+                <div class="displayschmetterlingblau"></div>
+                <p>50PT</p>
+              </div>
+              <div class="schmetterlingcard">
+                <div class="displayschmetterlinglila"></div>
+                <p>100PT</p>
+              </div>
+            </div>
+        </div>
+
+
+        <script>
+            //Erster Initialisierungsbereich
+            let startbtn = document.getElementById('startbtn');
+            let gameboard = document.getElementById('gameboard');
+            let name = document.getElementById('name');
+            let nameinput = document.getElementById('nameinput');
+            let selecinput = document.getElementById('bushselector');
+            let timeselec = document.getElementById('timeselector');
+            
+            
+
+            //Jetzt muss ich die Gameloop starten
+            function startGame(){
+              //Anzahl der ausgewählten Büsche
+              let bnr = parseInt(selecinput.options[selecinput.selectedIndex].value);
+                //Eingegebener Name oben links anzeigen
+                name.innerHTML = nameinput.value;
+                //Wenn nichts eingegeben, dann Platzhalter XXXX, damit das Feld nicht einfach leer bleibt
+                if(nameinput.value == ""){
+                    name.innerHTML = "XXXX";
+                }
+                //gameboard leeren, damit die Auswahlelemente verschwinden
+                gameboard.innerHTML = "";
+            
+            //Initialisierungsbereich2
+            let player = document.createElement("div");
+            let schmetterlingliste =  [];
+            let blumenliste = [];
+            let bewegungsweite = 40;
+            let scoreticker = document.getElementById('scoreticker');
+          
+            //Hintergrund ändern
+            function changeBg(){
+              gameboard.style.backgroundImage = "url(img/grass2.png)";
+            }
+            changeBg();
+
+            //Nun brauchen wir einen Player. Hier ist noch keine Movement Funktion, erst werden die Büsche
+            //generiert.
+            function createPlayer(){
+            player.classList.add("player");
+            gameboard.appendChild(player);
+        }
+
+            //Büsche generieren
+            function generateBushes(){
+               //Büsche, jenachdem, wie viele am Anfang ausgewählt wurden
+            for(let i = 0; i<bnr+1;i++){
+                let busch = document.createElement("div");
+                busch.classList.add("blume");
+                //Zufälliges platzieren:
+                // - Math.floor erstellt eine Ganzzahl
+                // - Math.random erstellt eine zufällige Zahl im Intervall (größte - kleinste)
+
+                //Maße und Position meines Gameboards:
+                //oben,links: x: 20 y:40
+                //unten,links: x:20 y: 708
+                //oben,rechts: x: 1505 y:40
+                //unten,rechts: x:1505 y:708
+
+                //Intervall [40,668] (Weil der Busch noch 40 Pixel hoch ist und ich so einen Overflow
+                //vermeiden kann)
+                //Erst wird eine Zahl zwischen 1 bis 16 generiert. Diese Zahl wird mit 40 multipliziert.
+                busch.style.top = Math.floor(Math.random() * 16 + 1) * 40 + 0 + "px";
+
+                //Intervall [20,1445] (Weil der Busch noch 40 Pixel breit ist und ich so einen Overflow
+                //vermeiden kann)
+                //Erst wird eine Zahl zwischen 1 bis 36 generiert. Diese Zahl wird mit 40 multipliziert.
+                //Dann werden die 20 dazu addiert, damit der Wertebereich auch stimmt. 
+                busch.style.left = Math.floor(Math.random() * 36 + 1) * 40 + 20 + "px";
+
+                blumenliste[i] = {
+                    x: busch.style.left,
+                    y: busch.style.top
+                }
+                gameboard.appendChild(busch);
+            }
+            }
+            //Schmetterlinge in einer Interval Funktion erstellen
+            function generateButterflies(){
+            //Schmetterlinge
+            for(let i = 0; i < 10; i++){
+                let zufallszahlschmetterling = Math.floor(Math.random() * 3 + 1);
+                let schmetterling = document.createElement("div");
+                if(zufallszahlschmetterling == 1){
+                schmetterling.classList.add("schmetterling");
+              }
+                if(zufallszahlschmetterling == 2){
+                 schmetterling.classList.add("schmetterlingblau");
+                }
+                if(zufallszahlschmetterling == 3){
+                 schmetterling.classList.add("schmetterlinglila");
+                }
+                schmetterling.setAttribute("id","schmetterling"+i);
+
+             //Zufälliges Platzieren nach selben Prinzip
+                schmetterling.style.top = Math.floor(Math.random() * 16 + 1) * 40 + 0 + "px";
+                schmetterling.style.left = Math.floor(Math.random() * 36 + 1) * 40 + 20 + "px";
+
+                schmetterlingliste[i] = {
+                    x: schmetterling.style.left,
+                    y: schmetterling.style.top,
+                    class: schmetterling.classList,
+                };  
+                gameboard.appendChild(schmetterling);
+            }
+            }
+
+          //Funktionsinitialisierung, damit im DOM schonmal der Player, die Büsche und die Schmetterlinge
+          //eingehangen werden.
+            createPlayer();
+            generateBushes();
+            generateButterflies();
+
+
+         document.addEventListener("keydown",playerMovement);
+        //Player Movement und Kollisionen mit Busch
+        //Für besagte Kollisionsabfrage wird ein Boolean initialisiert, der sich auf false setzt, wenn der
+        //Player mit einem Busch in Kontakt trifft
+        
+        let kollisionunten = false;
+        let kollisionoben = false;
+        let kollisionrechts = false;
+        let kollisionlinks = false;
+
+        function playerMovement(event){
+        let key = event.key;
+        let x = player.offsetLeft;
+        let y = player.offsetTop;
+          
+        //Hoch w oder Pfeiltaste hoch
+        if (key == "w" || key=="ArrowUp") {
+          kollisionunten = false;
+          for(let i = 0; i < bnr+1; i++){
+            if(blumenliste[i].x == player.style.left && 40+parseInt(blumenliste[i].y)+"px" == player.style.top){
+              kollisionunten = true;
+            }
+          }
+          if (y > 40 && kollisionunten == false) {
+            player.style.backgroundImage = "url(img/hero-idle-back.png)";
+            player.style.top = y - bewegungsweite + "px";
+          }
+        }
+        //Runter s oder Pfeiltaste runter
+        if (key == "s" || key=="ArrowDown") {
+          kollisionoben = false;
+          for(let i = 0; i < bnr+1;i++){
+            if(blumenliste[i].x == player.style.left && blumenliste[i].y == 40 + parseInt(player.style.top)+"px"){
+              kollisionoben = true;
+            }
+          }
+          if (y < 668 && kollisionoben == false) {
+            player.style.backgroundImage = "url(img/hero-idle-front.png)";
+            player.style.top = y + bewegungsweite + "px";
+          }
+        }
+
+        //Rechts d oder Pfeiltaste rechts
+        if (key == "d" || key=="ArrowRight") {
+          kollisionlinks = false;
+          for(let i = 0; i < bnr+1;i++){
+            if(blumenliste[i].x  == 40 + parseInt(player.style.left)+"px" && blumenliste[i].y == player.style.top){
+              kollisionlinks = true;
+            }
+          }
+
+          if (x < 1445 && kollisionlinks == false) {
+            player.style.backgroundImage = "url(img/hero-idle-side.png)";
+            player.style.left = x + bewegungsweite + "px";
+          }
+        }
+
+        //Links a oder Pfeiltaste links
+        if (key == "a" || key=="ArrowLeft") {
+          kollisionrechts = false;
+          for(let i = 0; i < bnr+1;i++){
+            if(40+ parseInt(blumenliste[i].x)+"px" == player.style.left && blumenliste[i].y == player.style.top){
+              kollisionrechts = true;
+            }
+          }
+
+          if (x > 20 && kollisionrechts == false) {
+            player.style.backgroundImage = "url(img/hero-idle-side-mirror.png)";
+            player.style.left = x - bewegungsweite + "px";
+          }
+        }
+      //Schmetterlinge sammeln.
+      let pt = 0;
+      //Da sich alle Positionen durch 40 teilen lassen, lässt sich diese Funktion sehr simpel etablieren
+        for(let i=0; i < 10; i++){
+          if(schmetterlingliste[i].x == player.style.left && schmetterlingliste[i].y == player.style.top){
+
+            //Punkte erhöhen
+            if(schmetterlingliste[i].class == "schmetterling"){
+              pt = parseInt(scoreticker.innerHTML) + 10;
+            }
+            if(schmetterlingliste[i].class == "schmetterlingblau"){
+              pt = parseInt(scoreticker.innerHTML) + 50;
+            }
+            if(schmetterlingliste[i].class == "schmetterlinglila"){
+              pt = parseInt(scoreticker.innerHTML) + 100;
+            }
+            scoreticker.innerHTML = pt;   
+
+            //Direkt einen neuen Schmetterling platzieren
+
+            let aktuellerschmetterling = document.getElementById("schmetterling"+i);
+
+
+
+             //Zufälliges Platzieren nach selbem Prinzip, wie sonst auch
+             aktuellerschmetterling.style.top = Math.floor(Math.random() * 16 + 1) * 40 + 0 + "px";
+             aktuellerschmetterling.style.left = Math.floor(Math.random() * 36 + 1) * 40 + 20 + "px";
+              schmetterlingliste[i].x = aktuellerschmetterling.style.left;
+              schmetterlingliste[i].y = aktuellerschmetterling.style.top;
+              schmetterlingliste[i].class = aktuellerschmetterling.classList;
+      }
+      }
+     }
+     //Schmetterlingsbewegung
+     let counter = 0;
+     function moveButterflies(){
+      //Schmetterling im DOM ansprechen
+      let aktuellerschmetterling = document.getElementById('schmetterling'+counter);
+      //Zufallszahl generieren
+      let randomnumber = Math.floor(Math.random() * 4 + 1);
+
+
+      //1 = Bewegung nach oben mit Check, ob der Schmetterling über den Rand gehen würde
+      if(randomnumber == 1 && counter < 10){
+        aktuellerschmetterling.style.top = parseInt(schmetterlingliste[counter].y) - bewegungsweite  +"px";
+        schmetterlingliste[counter].y = aktuellerschmetterling.style.top
+        if(parseInt(aktuellerschmetterling.style.top) <= 40){
+          aktuellerschmetterling.style.top = 40 +"px"
+          schmetterlingliste[counter].y = 40+"px";
+        }
+      }
+
+        //2 = Bewegung nach unten mit Check, ob der Schmetterling über den Rand gehen würde
+        if(randomnumber == 2 && counter < 10){
+        aktuellerschmetterling.style.top = parseInt(schmetterlingliste[counter].y) + bewegungsweite  +"px";
+        schmetterlingliste[counter].y = aktuellerschmetterling.style.top
+        if(parseInt(aktuellerschmetterling.style.top) >= 640){
+          aktuellerschmetterling.style.top = 640 +"px"
+          schmetterlingliste[counter].y = 640+"px";
+        }
+      }
+
+       //3 = Bewegung nach rechts mit Check, ob der Schmetterling über den Rand gehen würde
+       if(randomnumber == 3 && counter < 10){
+        aktuellerschmetterling.style.left = parseInt(schmetterlingliste[counter].x) + bewegungsweite  +"px";
+        schmetterlingliste[counter].x = aktuellerschmetterling.style.left
+        if(parseInt(aktuellerschmetterling.style.left)  >= 1420){
+          aktuellerschmetterling.style.left = 1420 +"px"
+          schmetterlingliste[counter].x = 1420+"px";
+        }
+      }
+
+       //4 = Bewegung nach links mit Check, ob der Schmetterling über den Rand gehen würde
+        if(randomnumber == 4 && counter < 10){
+        aktuellerschmetterling.style.left = parseInt(schmetterlingliste[counter].x) - bewegungsweite  +"px";
+        schmetterlingliste[counter].x = aktuellerschmetterling.style.left
+        if(parseInt(aktuellerschmetterling.style.left) <= 20){
+          aktuellerschmetterling.style.left = 20 +"px"
+          schmetterlingliste[counter].x = 20+"px";
+        }
+      }
+      counter++
+      if(counter == 10){
+        counter = 0;
+      }
+     }
+
+     //Wenn das Spiel vorbei ist, soll die Punktezahl in groß angezeigt werden.
+     function scoreboard(){
+      gameboard.innerHTML="";
+      gameboard.style.backgroundImage = "url(img/StarSky.gif)";
+      gameboard.classList.add("playgroundbeforestart");
+      let scoreboardrahmen = document.createElement("div")
+      scoreboardrahmen.classList.add("scoreborder");
+      gameboard.appendChild(scoreboardrahmen);
+      let scoreboardheading = document.createElement("p");
+      scoreboardheading.classList.add("finalpunkte");
+      scoreboardheading.innerHTML = "~SCOREBOARD~";
+      let finalscore = document.createElement("p");
+      finalscore.classList.add("finalpunkte");
+      let punktestand = document.getElementById("scoreticker").innerHTML;
+      let playername = document.getElementById("name").innerHTML;
+      finalscore.innerHTML = playername + " ... "+ punktestand + " PUNKTE";
+      scoreboardrahmen.appendChild(scoreboardheading);
+      scoreboardrahmen.appendChild(finalscore);
+     }
+
+     //Timer 
+     //Länge des Timers
+     let s = parseInt(timeselec.options[timeselec.selectedIndex].value);
+     function Timer() {
+        document.getElementById("sec").innerHTML = s;
+        s--;
+      }
+
+      //Alle 10 Schmetterlinge werden 1 Mal pro Sekunde bewegt. 1000ms = 1sec, 10 Schmetterlinge. 1 Schmetterling 100ms. 
+     setInterval(function(){
+      moveButterflies();
+     },100);
+
+     //Hier wird der Timer gecheckt. Landet dieser auf 0, wird as Scoreboard angezeigt und das Spiel ist vorbei.
+    const intid = setInterval(function(){
+      Timer();
+      if(s == -1){
+        clearInterval(intid);
+        scoreboard();
+      }
+     },1000)
+  }
+</script>
+</body>
+</html>
